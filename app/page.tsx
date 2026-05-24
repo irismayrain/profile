@@ -12,17 +12,24 @@ export const dynamic = "force-dynamic";
 export default function Home() {
   const profile = getProfile();
 
-  if (!profile) {
+  // 数据库还没灌数据(name 为空 = 默认 placeholder 行)。引导去 /admin。
+  if (!profile || !profile.name) {
     return (
-      <main className="flex min-h-screen items-center justify-center text-ink-soft">
-        <div className="text-center">
-          <p className="mb-4">数据库还没初始化。</p>
-          <p className="text-sm">
-            运行{" "}
-            <code className="rounded bg-page-soft px-2 py-0.5">
-              npm run seed:iris
-            </code>{" "}
-            来填充内容。
+      <main className="flex min-h-screen items-center justify-center px-6 text-ink-soft">
+        <div className="max-w-md text-center">
+          <p className="mb-4 text-lg">数据库还没灌数据。</p>
+          <p className="text-sm leading-relaxed">
+            打开{" "}
+            <a
+              href="/admin"
+              className="rounded bg-page-soft px-2 py-0.5 text-lav-500 underline-offset-2 hover:underline"
+            >
+              /admin
+            </a>{" "}
+            登录后点右上角「灌种子数据」按钮,自动填充。
+          </p>
+          <p className="mt-3 text-xs text-ink-mute">
+            (或者在终端跑 <code>npm run seed:iris && npm run import:articles</code>)
           </p>
         </div>
       </main>

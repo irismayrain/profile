@@ -103,6 +103,18 @@ function migrate(db: Database.Database) {
   if (!projColNames.has("highlights")) {
     db.exec("ALTER TABLE projects ADD COLUMN highlights TEXT NOT NULL DEFAULT '[]'");
   }
+
+  // 保证 profile 永远有一行（id=1）。空字段，但行在 —— 这样 /admin 不会崩。
+  // 主页 / 各 section 页通过判断 name 是否为空来决定显示「请灌数据」fallback。
+  const profileRow = db.prepare("SELECT id FROM profile WHERE id = 1").get();
+  if (!profileRow) {
+    db.prepare(
+      `INSERT INTO profile (
+         id, name, tagline, bio, location, avatar_emoji, email,
+         socials, manifesto, now_items, strengths, skills, education
+       ) VALUES (1, '', '', '', '', '🌸', '', '[]', '', '[]', '[]', '[]', '')`
+    ).run();
+  }
 }
 
 export type Profile = {
