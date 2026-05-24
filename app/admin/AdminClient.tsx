@@ -25,6 +25,8 @@ export default function AdminClient({
   const [tab, setTab] = useState<Tab>("profile");
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [seedRunning, setSeedRunning] = useState(false);
+  const [seedResult, setSeedResult] = useState<string | null>(null);
 
   function refresh() {
     startTransition(() => router.refresh());
@@ -34,6 +36,27 @@ export default function AdminClient({
     await fetch("/api/admin/logout", { method: "POST" });
     router.push("/admin/login");
     router.refresh();
+  }
+
+  async function runSeed() {
+    if (
+      !confirm(
+        "把 scripts/ 里的种子数据 + 文章灌进当前 DB？\n（UPSERT 操作，已有内容会被代码里的版本覆盖。本地 DB 通常不用跑这个；线上首次部署后跑一次。）"
+      )
+    )
+      return;
+    setSeedRunning(true);
+    setSeedResult(null);
+    try {
+      const res = await fetch("/api/admin/seed-all", { method: "POST" });
+      const json = await res.json();
+      setSeedResult(JSON.stringify(json, null, 2));
+      if (res.ok) router.refresh();
+    } catch (e: any) {
+      setSeedResult("Network error: " + (e?.message ?? String(e)));
+    } finally {
+      setSeedRunning(false);
+    }
   }
 
   return (
@@ -52,13 +75,37 @@ export default function AdminClient({
               <span className="text-xs text-iris-deep ml-2">同步中。。.</span>
             )}
           </div>
-          <button
-            onClick={logout}
-            className="text-sm text-ink-mute hover:text-rose-deep transition-colors"
-          >
-            退出
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={runSeed}
+              disabled={seedRunning}
+              className="text-sm text-iris-deep hover:text-rose-deep transition-colors disabled:opacity-50"
+              title="把 scripts/ 里的种子数据灌进当前 DB（UPSERT，重复跑安全）"
+            >
+              {seedRunning ? "灌数据中..." : "灌种子数据"}
+            </button>
+            <span className="text-ink-mute">/</span>
+            <button
+              onClick={logout}
+              className="text-sm text-ink-mute hover:text-rose-deep transition-colors"
+            >
+              退出
+            </button>
+          </div>
         </div>
+        {seedResult && (
+          <div className="mx-auto max-w-5xl px-6 pb-3">
+            <pre className="max-h-64 overflow-auto rounded-lg border border-black/10 bg-paper/60 p-3 text-xs font-mono leading-relaxed text-ink-soft">
+              {seedResult}
+            </pre>
+            <button
+              onClick={() => setSeedResult(null)}
+              className="mt-1 text-xs text-ink-mute hover:text-rose-deep"
+            >
+              关闭日志
+            </button>
+          </div>
+        )}
         <div className="mx-auto flex max-w-5xl gap-1 px-6">
           {(
             [
