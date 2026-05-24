@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type Item = { href: string; label: string; ext: string };
 
@@ -20,12 +21,33 @@ function isActive(href: string, pathname: string | null): boolean {
 
 export default function SiteNav({ name }: { name: string }) {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // 路由变了自动关菜单
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  // 菜单打开时禁止 body 滚动
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   return (
     <div className="sticky top-5 z-40 mx-auto w-full max-w-[1320px] px-5 md:px-9">
       <nav
         className="flex items-center justify-between rounded-[14px] border border-line bg-white/60 px-4 py-2.5 shadow-soft1"
-        style={{ backdropFilter: "blur(14px) saturate(140%)", WebkitBackdropFilter: "blur(14px) saturate(140%)" }}
+        style={{
+          backdropFilter: "blur(14px) saturate(140%)",
+          WebkitBackdropFilter: "blur(14px) saturate(140%)",
+        }}
       >
         {/* brand */}
         <Link href="/" className="flex items-center gap-2.5">
@@ -51,7 +73,7 @@ export default function SiteNav({ name }: { name: string }) {
           </span>
         </Link>
 
-        {/* tabs */}
+        {/* tabs · desktop */}
         <div className="hidden items-center gap-0.5 rounded-[10px] bg-page-soft p-1 md:flex">
           {items.map((it) => {
             const active = isActive(it.href, pathname ?? null);
@@ -91,8 +113,108 @@ export default function SiteNav({ name }: { name: string }) {
             <span className="pulse-dot" />
             available
           </span>
+
+          {/* mobile hamburger */}
+          <button
+            type="button"
+            aria-label={menuOpen ? "关闭菜单" : "打开菜单"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((v) => !v)}
+            className="flex h-9 w-9 items-center justify-center rounded-[8px] border border-line bg-white/80 text-ink-soft transition-colors hover:text-ink md:hidden"
+          >
+            {menuOpen ? (
+              // close icon
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              >
+                <path d="M3 3l10 10M13 3L3 13" />
+              </svg>
+            ) : (
+              // hamburger icon (3 lines)
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              >
+                <path d="M2 4h12M2 8h12M2 12h12" />
+              </svg>
+            )}
+          </button>
         </div>
       </nav>
+
+      {/* mobile dropdown menu */}
+      {menuOpen && (
+        <>
+          {/* backdrop, click to close */}
+          <button
+            type="button"
+            aria-label="关闭菜单背景"
+            onClick={() => setMenuOpen(false)}
+            className="fixed inset-0 top-0 z-30 bg-ink/10 backdrop-blur-[2px] md:hidden"
+          />
+          {/* panel */}
+          <div className="absolute left-5 right-5 top-full z-40 mt-2 rounded-[14px] border border-line bg-white/95 p-3 shadow-soft2 md:hidden"
+               style={{
+                 backdropFilter: "blur(14px) saturate(140%)",
+                 WebkitBackdropFilter: "blur(14px) saturate(140%)",
+               }}
+          >
+            <ul className="flex flex-col gap-0.5">
+              {items.map((it) => {
+                const active = isActive(it.href, pathname ?? null);
+                return (
+                  <li key={it.href}>
+                    <Link
+                      href={it.href}
+                      onClick={() => setMenuOpen(false)}
+                      className={`flex items-center justify-between rounded-[10px] px-4 py-3 transition-colors ${
+                        active
+                          ? "bg-lav-50 text-ink"
+                          : "text-ink-soft hover:bg-page-soft hover:text-ink"
+                      }`}
+                    >
+                      <span className="font-cn text-[15px] font-medium tracking-tightish">
+                        {it.label}
+                      </span>
+                      <span
+                        className={`font-mono text-[11px] ${
+                          active ? "text-lav-500" : "text-ink-mute"
+                        }`}
+                      >
+                        {it.ext}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="mt-2 border-t border-dashed border-line pt-3 px-1">
+              <span
+                className="inline-flex items-center gap-2 rounded-full border px-3 py-[5px] text-[12px] font-medium tracking-tightish"
+                style={{
+                  color: "#3d8a72",
+                  background: "rgba(111,181,154,.08)",
+                  borderColor: "rgba(111,181,154,.22)",
+                }}
+              >
+                <span className="pulse-dot" />
+                available
+              </span>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
