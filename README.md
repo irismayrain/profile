@@ -1,4 +1,4 @@
-# 林夕 · 个人主页
+# Iris · 个人主页
 
 AI 产品经理的个人网站。Next.js 14 + Tailwind + SQLite,带后台编辑器。
 
