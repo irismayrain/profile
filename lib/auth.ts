@@ -3,8 +3,21 @@ import crypto from "crypto";
 
 const COOKIE = "duet_admin";
 
-function secret() {
-  return process.env.SESSION_SECRET || "dev-secret-change-me";
+function secret(): string {
+  const s = process.env.SESSION_SECRET;
+  if (s && s.length >= 16) return s;
+
+  // Production: 不允许 fallback。代码公开后任何人都能拿到 fallback 字符串。
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(
+      "SESSION_SECRET is missing or too short in production. " +
+        "Set it in Railway → Variables tab (建议 32+ 字符随机串,用 " +
+        "`node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\"` 生成)。"
+    );
+  }
+
+  // Dev only: 给个固定 fallback，方便本地开发不用配 env。
+  return "dev-secret-not-for-production";
 }
 
 function sign(value: string) {
