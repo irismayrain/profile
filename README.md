@@ -2,7 +2,7 @@
 
 > AI 产品经理 · 6 年互联网 + 3 年 AI 实战 · 7 个独立 AI 作品
 
-**🌐 不想看代码,直接打开网站 → <https://profile-production-909e.up.railway.app>**
+**🌐 不想看代码,直接打开网站 → <https://irismayrain.com>**
 
 > 下面是给好奇这个站怎么实现的工程同事看的。
 > Live edit 在 `/admin`,运维细节见 [操作手册.md](./操作手册.md)。
@@ -152,7 +152,7 @@ profile/
 | Email | 944797659@qq.com |
 | GitHub | [@irismayrain](https://github.com/irismayrain) |
 | 文章 | [人人都是产品经理 · @Iris](https://www.woshipm.com/u/1678595) |
-| 演讲 | [Vibe Coding 全流程实战](https://profile-production-909e.up.railway.app/vibecoding.html) |
+| 演讲 | [Vibe Coding 全流程实战](https://irismayrain.com/vibecoding.html) |
 
 ---
 
