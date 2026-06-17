@@ -38,7 +38,7 @@ const profilePayload = {
       tagline: "具备 0 → 1 项目主导经验 + 规模化业务交付经验",
       body:
         "6 年互联网工作经验，其中 3 年 AI 产品经验，3 年教培业务规模化经验。" +
-        "主导 2 个 0 → 1 AI 产品从立项到内测交付，" +
+        "在真实经营场景中主导「问答 RAG → 数据底座 CRM → AI 内容生产」三级体系 0 → 1 落地，" +
         "独立完成 5 个 AI 产品交付 + 2 个 AI 陪伴 Agent 内测中，验证技术深度。" +
         "善于通过用户调研、数据分析、行业田野调研定义产品方向。",
     },
@@ -132,36 +132,32 @@ const insertExp = db.prepare(
 
 [
   {
-    company: "上海算术初子网络科技",
-    role: "AI 产品经理",
-    period: "2023.06 — 至今",
+    company: "监利闪电生活服务有限公司",
+    role: "AI 产品负责人",
+    period: "2023.06 — 2026.06",
     summary:
-      "签约 VTuber 创作者上千名 · 开播 600+ · B 站垂直区营收常年前三。",
+      "在一门真实经营的家居生意里，独立主导数字化从 0 到 1 —— " +
+      "以「诊断 → 筑基 → 收获」三级递进，把依赖人工与微信的流程系统化。",
     highlights: JSON.stringify([
       {
-        tag: "项目简介",
+        tag: "角色演进",
         body:
-          "主导公司 0 → 1 的两个直播场景 AI 产品，并进行小范围灰度验证" +
-          "（规避在真实主播社群铺开的抗拒与品牌风险），" +
-          "核心判断与技术细节见「项目经历」。",
+          "2023.06 生意起步期入局，从线上运营、售前客服与订单跟进摸清业务全貌；" +
+          "2024 起主导数字化建设，全面负责系统与线上业务。",
       },
       {
-        tag: "AI 实时 Copilot 提词器",
+        tag: "核心判断 · 数字化三级递进",
         body:
-          "产品形态从 Autopilot 转向 Copilot、小样本内测主播采纳率 30%，" +
-          "核心指标「应急可用度」获一线认可。",
+          "以商品问答 RAG 试点诊断出「AI 上限被数据质量锁死，瓶颈在缺实时数据源而非模型」，" +
+          "据此先自研内部 CRM 补数据底座，再于其上落地 AI 内容生产。" +
+          "核心判断与技术细节见「代表项目」。",
       },
       {
-        tag: "AI 直播切片",
+        tag: "交付方式",
         body:
-          "将切片从「主播积分兑换 + 自费成本」重构为「差异化签约竞争力」，" +
-          "约 20 名腰部主播小范围试点验证。",
-      },
-      {
-        tag: "方法论沉淀",
-        body:
-          "人设档案体系（含版本管理 + 主播本人审签）、AI 安全护栏框架、" +
-          "高能识别评分体系，成为公司后续 AI 项目可复用模板。",
+          "借助大模型与 AI 编程工具链（扣子 / Cursor / Lovable / Claude Code），" +
+          "以一人 + 1 名外部开发的少量协作，交付通常需研发、文案、客服多职能团队的产出，" +
+          "并推动一线团队完成系统采纳。",
       },
     ]),
     sort_order: 0,
@@ -259,6 +255,104 @@ const insertProj = db.prepare(
 
 [
   {
+    title: "商品问答 RAG · 评测驱动的范围决策",
+    subtitle: "2024 · 数字化①诊断",
+    description:
+      "销售 / 客服解答商品问题依赖翻聊天记录与问熟手，单次查询约 2.5 分钟。" +
+      "基于扣子（Coze）搭建商品知识库问答机器人。",
+    highlights: JSON.stringify([
+      {
+        tag: "评测驱动的范围决策",
+        body:
+          "自建约 80 条真实问答测试集分类评测，定位出「价格 / 库存类因数据过期而不可靠」—— " +
+          "据此把机器人限定在静态商品信息（材质 / 尺寸 / 安装），价格库存加护栏转人工，" +
+          "不让 AI 在不可靠区间硬答。",
+      },
+      {
+        tag: "成果",
+        body: "静态商品信息查询从约 2.5 分钟降至约 20 秒。",
+      },
+      {
+        tag: "关键洞察 → 下一步",
+        body:
+          "评测暴露的不是模型问题，而是公司缺实时数据源、AI 受限于数据质量 —— " +
+          "据此决定先停 AI 扩张、补数据底座，立项内部 CRM。",
+      },
+    ]),
+    tags: JSON.stringify(["扣子 Coze · 知识库 RAG", "自建评测集", "2.5min → 20s"]),
+    link: "#",
+    sort_order: 0,
+  },
+  {
+    title: "内部 CRM · 0→1 自研 + 外包加固",
+    subtitle: "2025 · 数字化②筑基",
+    description:
+      "为 AI 落地补数据底座 —— 把客户、线索、订单从微信聊天记录沉淀为结构化数据资产，" +
+      "同时解决线索跟进不及时的业务痛点。",
+    highlights: JSON.stringify([
+      {
+        tag: "多工具 vibe coding 工作流",
+        body:
+          "界面以 Dribbble 优秀作品定参考，Lovable 出原型起点，Cursor 内整合修改，" +
+          "疑难代码用 Gemini 辅助排查，配合 Supabase 搭 Web 端 CRM、按角色设计模块与权限；" +
+          "后期引入外部开发做安全加固与复杂逻辑，本人负责需求定义、对齐与上线验收。",
+      },
+      {
+        tag: "采纳率攻坚",
+        body:
+          "上线初期销售端采纳率仅约 25%，诊断为录入成本高于一线收益 —— " +
+          "据此把销售端重做为企业微信内的极简 H5（节点流转式跟进），" +
+          "录入压缩到几次点选，采纳率升至约 88%。",
+      },
+      {
+        tag: "成果",
+        body:
+          "覆盖一线销售与管理端的日常使用；" +
+          "线索 3 日内及时跟进率由约 40% 升至约 75% —— " +
+          "由「1·2·5·10 天」跟进节奏规则自动生成的每日跟进清单驱动。",
+      },
+      {
+        tag: "技术栈",
+        body: "Cursor · Lovable · Gemini · Supabase（DB + RLS）· 企业微信自建应用（H5）· RBAC。",
+      },
+    ]),
+    tags: JSON.stringify(["Supabase · 企业微信 H5", "RBAC", "采纳率 25% → 88%"]),
+    link: "#",
+    sort_order: 1,
+  },
+  {
+    title: "AI 内容生产模块 · 集成于 CRM",
+    subtitle: "2026 · 数字化③收获",
+    description:
+      "数据底座建成后的「收获层」—— 批量生产小红书 / 抖音获客内容与私域触达文案。" +
+      "商品信息直接取自 CRM 真实参数而非模型自由发挥，从源头杜绝「参数写错」的幻觉。",
+    highlights: JSON.stringify([
+      {
+        tag: "技术决策 · 三个「不做」",
+        body:
+          "该数据体量下模型微调性价比不足，不做微调；输入由用户选定、直查即命中，" +
+          "不引入向量检索（RAG 在此属过度设计）；用 Claude Code + Codex 在现有 CRM 代码库内原生开发，" +
+          "避免另起系统造成数据割裂。生成模型按性价比选 DeepSeek API。",
+      },
+      {
+        tag: "三路输入生成",
+        body:
+          "把对标账号与爆款内容拆解为提示词模板（Few-shot），" +
+          "生成时按所选品类带入 CRM 商品真实参数 —— 「对标风格 + 爆款模板 + 真实参数」三路共同生成，" +
+          "产出经人工审核后发布。",
+      },
+      {
+        tag: "成果",
+        body:
+          "单篇文案产出从约 35 分钟降至约 5 分钟；" +
+          "可产出合格内容的人数从 1–2 人扩展到全部一线销售。",
+      },
+    ]),
+    tags: JSON.stringify(["Claude Code · Codex · DeepSeek", "Few-shot 模板", "35min → 5min"]),
+    link: "#",
+    sort_order: 2,
+  },
+  {
     title: "镜中 · AI 塔罗陪伴 Agent",
     subtitle: "v1 内测中",
     description:
@@ -305,7 +399,7 @@ const insertProj = db.prepare(
     ]),
     tags: JSON.stringify(["Memory · Harness · Context", "AI 陪伴 Agent", "v1 内测中"]),
     link: "#",
-    sort_order: 0,
+    sort_order: 3,
   },
   {
     title: "Suki · 每天带一点会让你喜欢的东西",
@@ -353,7 +447,43 @@ const insertProj = db.prepare(
     ]),
     tags: JSON.stringify(["Real Agent", "多工具调度", "v1 内测中"]),
     link: "#",
-    sort_order: 1,
+    sort_order: 4,
+  },
+  {
+    title: "璞玉 · AI 求职辅导（写手 × 审稿人双角色）",
+    subtitle: "邀请制内测打磨中",
+    description:
+      "帮 gap 期 / 应届 / 转行求职者把真实经历翻译成简历语言。" +
+      "铁律「做大不吹大、落地不穿帮」：只升级措辞，绝不升级规模与事实。",
+    highlights: JSON.stringify([
+      {
+        tag: "双角色对抗架构",
+        body:
+          "写手（暖）产出，审稿人（冷）按 7 条规则逐条拦截（反吹大 / 市场判断须有据 / " +
+          "不空夸 / 不假装确定 / 危机 / 边界），专治大模型谄媚本能；" +
+          "刻意不上多 Agent，模型按职责分档（Flash 跑量 / Pro 判断），单一 API 吃前缀缓存。",
+      },
+      {
+        tag: "回归评测体系",
+        body:
+          "按规则 + 语气 + 压力场景编写测试题集，含「故意写差的版本」反向验证审稿人拦截力；" +
+          "每次提示词改动全套重跑，强模型当裁判（LLM-as-Judge）。",
+      },
+      {
+        tag: "危机旁路 + 诚实数据设计",
+        body:
+          "危机信号不进生成回路、程序侧关键词兜底直接接管，引向真实资源；" +
+          "用户原话不可变存储、作为审稿唯一依据；" +
+          "市场结论按「题库命中 → 实时检索 → 承认不确定」标注置信度。",
+      },
+      {
+        tag: "技术栈",
+        body: "DeepSeek V4 Flash / Pro 双档 · 严格 JSON 协议 · 可续会话 · python-docx 简历导出。",
+      },
+    ]),
+    tags: JSON.stringify(["双角色对抗", "LLM-as-Judge", "邀请制内测"]),
+    link: "#",
+    sort_order: 5,
   },
   {
     title: "Linger · AI 阅读反思工具",
@@ -382,7 +512,7 @@ const insertProj = db.prepare(
     ]),
     tags: JSON.stringify(["Prompt Engineering", "AI 安全", "准备开源"]),
     link: "#",
-    sort_order: 2,
+    sort_order: 6,
   },
   {
     title: "北极星知识库 · 个人 AI 第二大脑",
@@ -426,7 +556,7 @@ const insertProj = db.prepare(
     ]),
     tags: JSON.stringify(["RAG", "BGE-M3 + pgvector", "可现场演示"]),
     link: "#",
-    sort_order: 3,
+    sort_order: 7,
   },
   {
     title: "GlowNote · 美妆品牌内容生成 iOS 工具",
@@ -446,7 +576,7 @@ const insertProj = db.prepare(
     ]),
     tags: JSON.stringify(["iOS", "多模型路由", "合规设计"]),
     link: "#",
-    sort_order: 4,
+    sort_order: 8,
   },
   {
     title: "Duet · Markdown 批注与 Vibe Coding 反馈工具",
@@ -466,7 +596,7 @@ const insertProj = db.prepare(
     ]),
     tags: JSON.stringify(["Open Source", "Vite + React", "Markdown"]),
     link: "https://github.com/irismayrain",
-    sort_order: 5,
+    sort_order: 9,
   },
   {
     title: "Daily Tarot · HTML 塔罗抽签应用",
@@ -487,7 +617,7 @@ const insertProj = db.prepare(
     ]),
     tags: JSON.stringify(["AI 图像", "原创插画", "Open Source"]),
     link: "https://github.com/irismayrain",
-    sort_order: 6,
+    sort_order: 10,
   },
 ].forEach((p) => insertProj.run(p));
 
@@ -503,5 +633,5 @@ const articleCount = (
 console.log("✅ Seed (Iris) done.");
 console.log("   profile · upserted (strengths 3 · skills 5 · education)");
 console.log("   experience · 4 rows (with highlights)");
-console.log("   projects · 7 rows (with highlights)");
+console.log("   projects · 11 rows (with highlights)");
 console.log(`   articles · ${articleCount} rows (untouched · 由 import:articles 维护)`);
